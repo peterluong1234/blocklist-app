@@ -1,48 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Blocklist as BlocklistModel } from './models/blocklist';
+import { Routes, Route } from 'react-router-dom';
 import Blocklist from './components/Blocklist/Blocklist';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import styles from "./pages/BlocklistPage/BlocklistPage.module.css";
-import * as BlocklistsAPI from "./utilities/blocklists-api";
-import BlocklistModal from './components/BlocklistModal/BlocklistModal';
-import AddBlocklist from './components/AddBlocklist/AddBlocklist';
+import ViewEditBlocklist from './components/ViewEditBlocklist/ViewEditBlocklist';
+import NavBar from './components/NavBar/NavBar';
+import AuthPage from './pages/AuthPage/AuthPage';
+import { getUser } from './utilities/users-service';
+import { User } from './models/user';
+
 
 function App() {
-	const [blocklists, setBlocklists] = useState<BlocklistModel[]>([]);
-	const [showBlocklistModal, setShowBlocklistModal] = useState(false);
-
-	useEffect(() => {
-		async function loadBlocklists() {
-			try {
-				const blocklists = await BlocklistsAPI.fetchBlocklist();
-				setBlocklists(blocklists);
-			} catch (error) {
-				console.error(error);
-				alert(error);
-			}
-		}
-		loadBlocklists();
-	}, []);
+	const [user, setUser] = useState<User | null>(getUser());
+	
+	// console.log(user);
 
 	return (
-		<Container>
-			<Row xs={1} md={2} xl={3} className="g-4">
-			{blocklists.map(blocklist => (
-				<Col key={blocklist._id}>
-				 <Blocklist blocklist={blocklist} className={styles.blocklist}/>
-				</Col>
-			))}
-			</Row>
-			<AddBlocklist />
-			{/* {
-				showBlocklistModal &&
-				<BlocklistModal 
-					onDimiss={() => setShowBlocklistModal(false)}
-					onBlocklistSaved={() => {}}
-				/>
-			} */}
-		</Container>
+		<>
+			<NavBar setUser={setUser} user={user}/>
+			{
+				user ?
+					<div>
+						<Routes>
+							<Route path="/" element={<Blocklist />} />
+							<Route path="/:blocklistId" element={<ViewEditBlocklist />} />
+						</Routes>
+					</div>
+					:
+					<AuthPage setUser={setUser} />
+			}
+		</>
 	);
 }
 

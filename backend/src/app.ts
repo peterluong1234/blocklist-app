@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express"
 import blocklistRoutes from "./routes/blocklist";
+import userRoutes from "./routes/user";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // middleware that checks for this endpoint
 app.use("/api/blocklists", blocklistRoutes);
+app.use("/api/users", userRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));

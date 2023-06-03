@@ -16,6 +16,11 @@ export async function fetchBlocklist(): Promise<Blocklist[]> {
     return response.json();
 }
 
+export async function fetchList(id: string): Promise<Blocklist>{
+    const response = await fetchData(`/api/blocklists/${id}`, { method: "GET" })
+    return response.json();
+}
+
 export interface BlocklistInput {
     name: string,
     listOfURL?: string[],
@@ -31,4 +36,20 @@ export async function createBlocklist(blocklist: BlocklistInput): Promise<Blockl
         body: JSON.stringify(blocklist),
     });
     return response.json();
+}
+
+export async function updateBlocklist(blocklist: BlocklistInput, id: string): Promise<Blocklist> {
+    const response = await fetchData(`/api/blocklists/${id}`,
+    {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(blocklist),
+    });
+    return response.json()
+}
+
+export async function deleteBlocklist(id: string) {
+    await fetchData("api/blocklists/" + id, { method: "DELETE" });
 }

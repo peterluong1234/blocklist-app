@@ -117,8 +117,8 @@ export const deleteBlocklist: RequestHandler = async(req, res, next) => {
         // }
         // why does .remove not work?
         // await blocklist.remove();
-
-        res.sendStatus(204);
+        
+        res.sendStatus(204)
 
     } catch (error) {
         next(error);       
