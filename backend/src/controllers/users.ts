@@ -59,7 +59,6 @@ const createJWT = (user: UserBody) => {
 
 interface CustomRequest extends Request {
     user?: JwtPayload, // Replace 'User' with the appropriate type for your 'user' property
-    // exp?: string,
   }
 
 export const checkToken = async (req: CustomRequest, res: Response, next: NextFunction) => {
