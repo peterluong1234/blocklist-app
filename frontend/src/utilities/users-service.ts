@@ -3,6 +3,7 @@ import * as usersAPI from "./users-api";
 
 export function getToken() {
     const token = localStorage.getItem('token');
+    // console.log(token);
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     if (payload.exp < Date.now() / 1000) {
@@ -10,7 +11,6 @@ export function getToken() {
         return null;
     }
     return token;
-
 }
 
 export function getUser() {
@@ -38,7 +38,9 @@ interface LoginValues {
 export async function login(credentials : LoginValues) {
     try {
         const token = await usersAPI.login(credentials);
+        console.log('login' + token);
         localStorage.setItem('token', token);
+        console.log(token);
         return getUser();
     } catch (error) {
         console.error(error);
@@ -47,4 +49,9 @@ export async function login(credentials : LoginValues) {
 
 export async function logout() {
     localStorage.removeItem('token');
+}
+
+export async function checkToken() {
+    return usersAPI.checkToken()
+    // .then(dateStr => new Date(dateStr));
 }

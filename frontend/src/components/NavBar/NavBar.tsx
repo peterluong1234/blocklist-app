@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = ({setUser, user}) => {
         console.log('hello');
     }
     return (
-        <Navbar bg="primary" variant="dark" expand="sm" sticky="top">
+        <Navbar bg="primary" variant="dark" expand="sm" fixed="bottom">
             <Container>
                 <Navbar.Brand as={Link} to="/">
                     Blocklist App

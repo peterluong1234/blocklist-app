@@ -3,14 +3,19 @@ import { useParams } from "react-router-dom";
 import * as BlocklistAPI from "../../utilities/blocklists-api"
 import { Blocklist as BlocklistModel } from "../../models/blocklist";
 import { redirect } from "react-router-dom";
+import { User } from '../../models/user';
 
+interface ViewEditBlocklistProps {
+    user: User
+}
 interface RouteParams {
     [key: string]: string | undefined;
 }
 
-const ViewEditBlocklist: React.FC = () => {
+const ViewEditBlocklist = ({ user }: ViewEditBlocklistProps) => {
     const [blocklist, setBlocklist] = useState<BlocklistModel>({
         _id: '',
+        userId: user._id,
         name: '',
     });
 

@@ -4,12 +4,16 @@ import blocklistRoutes from "./routes/blocklist";
 import userRoutes from "./routes/user";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
+import checkToken from "../config/checkToken";
 
 const app = express();
 
 app.use(morgan("dev"));
 
 app.use(express.json());
+
+
+app.use(checkToken);
 
 // middleware that checks for this endpoint
 app.use("/api/blocklists", blocklistRoutes);
