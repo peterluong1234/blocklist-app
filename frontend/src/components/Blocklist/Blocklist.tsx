@@ -6,7 +6,7 @@ import styles from "../../pages/BlocklistPage/BlocklistPage.module.css"
 import * as BlocklistsAPI from "../../utilities/blocklists-api";
 import AddBlocklist from '../AddBlocklist/AddBlocklist';
 import { Link } from 'react-router-dom';
-
+import * as usersService from "../../utilities/users-service";
 
 const Blocklist = () => {
 const [blocklists, setBlocklists] = useState<BlocklistModel[]>([]);
@@ -24,6 +24,11 @@ useEffect(() => {
     loadBlocklists();
 }, []);
 
+const handleCheckToken = async () => {
+    const expDate = await usersService.checkToken();
+    console.log(expDate);
+}
+
 return (
     <Container>
 			<Row xs={1} md={2} xl={3} className="g-4">
@@ -36,6 +41,7 @@ return (
 			))}
 			</Row>
 			<AddBlocklist />
+            <button onClick={handleCheckToken}>Check when my login expires</button>
 		</Container>
 )
 }

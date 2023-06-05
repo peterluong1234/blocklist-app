@@ -1,17 +1,8 @@
 import { User } from "../models/user";
-
+import sendRequest from "./send-request"
 const BASE_URL = 'api/users';
 
-async function fetchData(input: RequestInfo, init?: RequestInit) {
-    const response = await fetch(input,init);
-    if (response.ok) {
-        return response;
-    } else {
-        const errorBody = await response.json();
-        const errorMessage = errorBody.error;
-        throw Error(errorMessage);
-    }
-}
+
 
 export interface UserInput {
     username: string,
@@ -19,28 +10,34 @@ export interface UserInput {
     password: string,
 }
 
-export async function signUp(user: UserInput) {
-    const response = await fetchData(BASE_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-    });
-    return response.json();
+export async function signUp(user: UserInput): Promise<string> {
+    return sendRequest(BASE_URL, "POST", user)
+    // const response = await fetchData(BASE_URL, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(user),
+    // });
+    // return response.json();
 }
 
 export interface LoginInput {
     username: string,
     password: string,
 }
-export async function login(credentials: LoginInput) {
-    const response = await fetchData(BASE_URL + '/login', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-    });
-    return response.json();
+export async function login(credentials: LoginInput): Promise<string>{
+    return sendRequest(BASE_URL + '/login', "POST", credentials)
+    // const response = await fetchData(BASE_URL + '/login', {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(credentials),
+    // });
+    // return response.json();
+}
+
+export function checkToken() {
+    return sendRequest(BASE_URL + '/check-token');
 }

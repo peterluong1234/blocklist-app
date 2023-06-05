@@ -1,8 +1,8 @@
-import { RequestHandler } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
-import jwt from 'jsonwebtoken';
+import jwt, { JwtHeader, JwtPayload } from 'jsonwebtoken';
 import env from "../util/validateEnv";
 import bcrypt from "bcrypt";
 
@@ -55,4 +55,17 @@ const createJWT = (user: UserBody) => {
         env.SECRET,
         { expiresIn: '48hr' }
     )
+}
+
+interface CustomRequest extends Request {
+    user?: JwtPayload, // Replace 'User' with the appropriate type for your 'user' property
+    // exp?: string,
+  }
+
+export const checkToken = async (req: CustomRequest, res: Response, next: NextFunction) => {
+    // console.log('req.user', req.user);
+    // res.json(req.exp);
+//   console.log(req.user);
+console.log('hello')
+//   res.sendStatus(200);
 }
