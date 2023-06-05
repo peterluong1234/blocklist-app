@@ -5,7 +5,7 @@ import * as BlocklistController from "../controllers/blocklist";
 // instead using app, express.Router() helps define a variable in place of app
 const router = express.Router();
 
-router.get("/", BlocklistController.getBlocklists);
+router.get("/:userId", BlocklistController.getBlocklists);
 router.get("/:blocklistId", BlocklistController.getBlockList);
 router.post("/", BlocklistController.createBlocklist);
 router.patch("/:blocklistId", BlocklistController.updateBlocklist);

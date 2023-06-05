@@ -11,8 +11,6 @@ import { User } from './models/user';
 
 function App() {
 	const [user, setUser] = useState<User | null>(getUser());
-	
-	// console.log(user);
 
 	return (
 		<>
@@ -21,8 +19,8 @@ function App() {
 				user ?
 					<div>
 						<Routes>
-							<Route path="/" element={<Blocklist />} />
-							<Route path="/:blocklistId" element={<ViewEditBlocklist />} />
+							<Route path="/" element={<Blocklist user={user} />} />
+							<Route path="/:blocklistId" element={<ViewEditBlocklist user={user} />} />
 						</Routes>
 					</div>
 					:

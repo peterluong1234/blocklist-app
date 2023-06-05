@@ -7,14 +7,19 @@ import * as BlocklistsAPI from "../../utilities/blocklists-api";
 import AddBlocklist from '../AddBlocklist/AddBlocklist';
 import { Link } from 'react-router-dom';
 import * as usersService from "../../utilities/users-service";
+import { User } from '../../models/user';
 
-const Blocklist = () => {
+interface BlocklistProps {
+    user: User
+}
+
+const Blocklist = ({ user }: BlocklistProps) => {
 const [blocklists, setBlocklists] = useState<BlocklistModel[]>([]);
 
 useEffect(() => {
     async function loadBlocklists() {
         try {
-            const blocklists = await BlocklistsAPI.fetchBlocklist();
+            const blocklists = await BlocklistsAPI.fetchBlocklist(user._id);
             setBlocklists(blocklists);
         } catch (error) {
             console.error(error);
@@ -30,7 +35,7 @@ const handleCheckToken = async () => {
 }
 
 return (
-    <Container>
+        <Container>
 			<Row xs={1} md={2} xl={3} className="g-4">
 			{blocklists.map(blocklist => (
                     <Col key={blocklist._id}>
@@ -40,8 +45,8 @@ return (
 				</Col>
 			))}
 			</Row>
-			<AddBlocklist />
-            <button onClick={handleCheckToken}>Check when my login expires</button>
+			<AddBlocklist user={user}/>
+            {/* <button onClick={handleCheckToken}>Check when my login expires</button> */}
 		</Container>
 )
 }

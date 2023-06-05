@@ -11,8 +11,8 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
     }
 }
 
-export async function fetchBlocklist(): Promise<Blocklist[]> {
-    const response = await fetchData("/api/blocklists/", { method: "GET" })
+export async function fetchBlocklist(userId: string): Promise<Blocklist[]> {
+    const response = await fetchData("/api/blocklists/" + userId, { method: "GET" })
     return response.json();
 }
 
@@ -22,6 +22,7 @@ export async function fetchList(id: string): Promise<Blocklist>{
 }
 
 export interface BlocklistInput {
+    userId: string,
     name: string,
     listOfURL?: string[],
 }

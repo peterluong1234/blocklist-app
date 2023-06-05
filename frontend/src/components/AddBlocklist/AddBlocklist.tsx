@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { BlocklistInput } from "../../utilities/blocklists-api";
 import * as BlocklistAPI from "../../utilities/blocklists-api";
+import styles from "../AddBlocklist/AddBlocklist.module.css"
+import { User } from '../../models/user';
 
+interface BlocklistProps {
+    user: User
+}
 interface FormValues {
+    userId: string;
     name: string;
     listOfURL?: string[];
 }
 
-const AddBlocklist: React.FC = () => {
+const AddBlocklist = ({ user }: BlocklistProps ) => {
     const [formValues, setFormValues] = useState<FormValues>({
+        userId: user._id,
         name: '',
     });
 
@@ -49,7 +56,7 @@ const AddBlocklist: React.FC = () => {
         // e.preventDefault();
         try {
             await BlocklistAPI.createBlocklist(formValues)
-            setFormValues({ name: '' });
+            setFormValues({ userId: user._id, name: '' });
             
         } catch (error) {
             console.error(error)
@@ -57,7 +64,7 @@ const AddBlocklist: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.moveDown}>
             <div>
                 <label htmlFor="name">Name:</label>
                 <input

@@ -4,8 +4,10 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
 export const getBlocklists: RequestHandler = async (req, res, next) => {
+    const userId = req.params.userId;
+
     try {
-        const blocklists = await BlocklistModel.find().exec();
+        const blocklists = await BlocklistModel.find({userId: userId}).exec();
         res.status(200).json(blocklists);
     } catch (error) {
         next(error);
@@ -33,12 +35,14 @@ export const getBlockList: RequestHandler = async (req, res, next) => {
 }
 
 interface CreateBlocklistBody {
+    userId?: string,
     name?: string,
     listOfURL?: string[],
 }
 
 export const createBlocklist: RequestHandler<unknown, unknown, CreateBlocklistBody, unknown > = async (req, res, next) => {
     // send name and array out of body
+    const userId = req.body.userId;
     const name = req.body.name;
     const listOfURL = req.body.listOfURL;
 
@@ -47,6 +51,7 @@ export const createBlocklist: RequestHandler<unknown, unknown, CreateBlocklistBo
             throw createHttpError(400, "Blocklist must have a name");
         }
         const newBlocklist = await BlocklistModel.create({
+            userId: userId,
             name: name,
             listOfURL: listOfURL,
         })
