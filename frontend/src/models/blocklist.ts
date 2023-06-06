@@ -5,4 +5,5 @@ export interface Blocklist {
     listOfURL?: string[],
     createdAt?: string,
     updatedAt?: string,
+    isActive: boolean,
 }

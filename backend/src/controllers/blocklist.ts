@@ -17,7 +17,6 @@ export const getBlocklists: RequestHandler = async (req, res, next) => {
 
 export const getBlockList: RequestHandler = async (req, res, next) => {
     const blocklistId = req.params.blocklistId;
-
     try {
         if (!mongoose.isValidObjectId(blocklistId)) {
             throw createHttpError(400, "Invalid blocklist id")
@@ -69,13 +68,15 @@ interface UpdateBlocklistParams {
 interface UpdateBlocklistBody {
     name?: string,
     listOfURL?: string[],
+    isActive?: boolean,
 }
 
 export const updateBlocklist: RequestHandler<UpdateBlocklistParams, unknown, UpdateBlocklistBody, unknown> = async(req, res, next) => {
     const blocklistId = req.params.blocklistId;
     const newName = req.body.name;
     const newListOfURL = req.body.listOfURL;
-    
+    const isActive = req.body.isActive;
+
     try {
         if (!mongoose.isValidObjectId(blocklistId)) {
             throw createHttpError(400, "Invalid blocklist id")
@@ -97,6 +98,7 @@ export const updateBlocklist: RequestHandler<UpdateBlocklistParams, unknown, Upd
         // or how to navigate around this
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         blocklist.listOfURL = newListOfURL!;
+        blocklist.isActive = isActive!;
 
         const updatedBlocklist = await blocklist.save();
 

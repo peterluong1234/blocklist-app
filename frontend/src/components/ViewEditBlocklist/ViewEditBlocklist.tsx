@@ -17,7 +17,10 @@ const ViewEditBlocklist = ({ user }: ViewEditBlocklistProps) => {
         _id: '',
         userId: user._id,
         name: '',
+        isActive: true,
     });
+
+    const [isActive, setIsActive] = useState(false)
 
     const { blocklistId } = useParams<RouteParams>();
 
@@ -27,7 +30,9 @@ const ViewEditBlocklist = ({ user }: ViewEditBlocklistProps) => {
                 const list = await BlocklistAPI.fetchList(blocklistId!);
                 const { name, _id } = list;
                 if (!name || !_id) throw new Error("Blocklist does not exist. No name or ID")
+                console.log(list);
                 setBlocklist(list);
+                setIsActive(list.isActive);
                 // console.log(list)
             } catch (error) {
                 console.error(error);
@@ -80,6 +85,13 @@ const ViewEditBlocklist = ({ user }: ViewEditBlocklistProps) => {
         
     }
 
+    const handleToggle = () => {
+        setBlocklist((prevValues) => {
+            setIsActive(!isActive)
+            return { ...prevValues, isActive: !isActive}
+        })
+    }
+
     return (<>
         <form onSubmit={handleSubmit}>
             <div>
@@ -95,6 +107,10 @@ const ViewEditBlocklist = ({ user }: ViewEditBlocklistProps) => {
                 }
             </div>
             <button type="button" onClick={addURL}>Add URL</button>
+            <div>
+                <input type="checkbox" id="blocklistToggle" checked={isActive} onChange={handleToggle}/>
+                <label htmlFor="blocklistToggle">Active</label>
+            </div>
             <button type="submit">Save</button>
         </form>
         <button type="button" onClick={deleteBlocklist}>Delete</button>

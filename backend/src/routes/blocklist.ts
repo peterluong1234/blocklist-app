@@ -6,7 +6,7 @@ import * as BlocklistController from "../controllers/blocklist";
 const router = express.Router();
 
 router.get("/:userId", BlocklistController.getBlocklists);
-router.get("/:blocklistId", BlocklistController.getBlockList);
+router.get("/blocklist/:blocklistId", BlocklistController.getBlockList);
 router.post("/", BlocklistController.createBlocklist);
 router.patch("/:blocklistId", BlocklistController.updateBlocklist);
 router.delete("/:blocklistId", BlocklistController.deleteBlocklist);

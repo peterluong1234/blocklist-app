@@ -17,7 +17,7 @@ export async function fetchBlocklist(userId: string): Promise<Blocklist[]> {
 }
 
 export async function fetchList(id: string): Promise<Blocklist>{
-    const response = await fetchData(`/api/blocklists/${id}`, { method: "GET" })
+    const response = await fetchData(`/api/blocklists/blocklist/${id}`, { method: "GET" })
     return response.json();
 }
 

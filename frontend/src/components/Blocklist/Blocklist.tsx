@@ -29,11 +29,6 @@ useEffect(() => {
     loadBlocklists();
 }, []);
 
-const handleCheckToken = async () => {
-    const expDate = await usersService.checkToken();
-    console.log(expDate);
-}
-
 return (
         <Container>
 			<Row xs={1} md={2} xl={3} className="g-4">
